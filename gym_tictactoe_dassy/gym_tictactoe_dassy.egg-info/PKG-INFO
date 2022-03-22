@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: gym-tictactoe-dassy
+Version: 0.0.1
+Summary: Implementation of an OpenAI Gym learning environment of a simple tic tac toe game.
+Home-page: https://github.com/LaureDas/gym_tictactoe_dassy.git
+Author: Laure Dassy
+Author-email: UNKNOWN
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN
