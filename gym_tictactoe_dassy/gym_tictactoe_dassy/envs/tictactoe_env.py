@@ -1,7 +1,6 @@
 import gym
 from gym import error, spaces, utils
 from gym.utils import seeding
-from .utils import *
 import numpy as np
 import random
 
