@@ -10,6 +10,7 @@ class TictactoeEnv(gym.Env):
     """
     #------------------------------------GAME INIT-------------------------------------------
     def __init__(self):
+        self.observation_space = spaces.Box(low=np.array([-1]*9), high=np.array([1]*9), dtype=np.int)
         #board as 3x3, 9 spaces required
         self.action_space = spaces.Discrete(9)
 
@@ -25,8 +26,6 @@ class TictactoeEnv(gym.Env):
         #all available positions on the board 
         self.available = [0,1,2,3,4,5,6,7,8]
         #obervsation space =state space defining the set of all states of the environments you can be in 
-        self.observation_space = spaces.Box(low=np.array([-1]*9), high=np.array([1]*9), dtype=np.int)
-
     #------------------------------------GAME STATE------------------------------------------
 
 

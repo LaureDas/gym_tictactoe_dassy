@@ -7,7 +7,6 @@ class QLearningAgent():
     def agent_init(self, agent_init_info):
         """Setup for the agent called when the experiment first starts.
         """
-        
         self.num_actions = agent_init_info["num_actions"]
         self.epsilon = agent_init_info["epsilon"]
         self.gamma = agent_init_info["gamma"]

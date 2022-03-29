@@ -119,7 +119,6 @@ if __name__=="__main__":
                 else:
                     # print('there')
                     action=agent.agent_step(rwd,s2)
-
     
         # print('there', list(dic_rewards.values()))
         pkl.dump(agent,open("qlearner.pkl", "wb"))
