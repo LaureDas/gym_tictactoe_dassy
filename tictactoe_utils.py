@@ -1,6 +1,5 @@
 from collections import Counter
 from itertools import product
-
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -70,7 +69,6 @@ def load_qtable(name="qtable"):
     load the qtable
     """
     return np.load("{}.npy".format(name))
-
 
 def test_self_play_learning(env, qtable, max_steps, num_test_games, state_dict):
     """
