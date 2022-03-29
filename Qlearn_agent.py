@@ -55,8 +55,6 @@ class QLearningAgent():
         # print('testing',self.q[self.prev_state,self.prev_action])
         update=self.alpha*(target-self.q[self.prev_state,self.prev_action])
         self.q[self.prev_state,self.prev_action]+= update
-
-        # print('update', update)
         # print('list',self.q)
         # print('id problem',self.q[self.prev_state][self.prev_action])
         self.prev_state = state

@@ -16,7 +16,7 @@ random.seed(0)
 import collections
 from matplotlib import pyplot as plt
 
-def play(env,policy, episodes, opponent_policy=None):
+def play(env,policy, episodes):
     print('Playing..') 
     test_rewards = []
     result = {'win':0,'draw':0,'lose':0}
@@ -26,8 +26,7 @@ def play(env,policy, episodes, opponent_policy=None):
         done = False
         env.render()
         total_reward = 0
-#         i=0
-        while not done: #and i<max_steps:
+        while not done: 
             action = policy(state)
             print('\nmarking X at spot:{}'.format(action))
             state, r, done, info = env.step(action)
@@ -44,9 +43,8 @@ def play(env,policy, episodes, opponent_policy=None):
                     result['draw']+=1
             else:
                 env.render()
-                print('\nCurrent Game Status: {}'.format(info['game_status']))
+                print('\nGame Status: {}'.format(info['game_status']))
                 print('\nAvailable Positions:{}'.format(info['available_spot']))
-#             i += 1
         test_rewards.append(total_reward)
     return result, test_rewards
 
@@ -60,42 +58,35 @@ def moving_average(x, size = 1000):
     return means
     
 def getPolicy(Q):
-    
     policy=collections.defaultdict(lambda : ValueError('Not Defined'))
-    for s in Q.keys():
-        policy[s] = np.argmax(Q[s])
+    for state in Q.keys():
+        policy[state] = np.argmax(Q[state])
     
-    def greedyAction(s):
-        action = policy[s]
+    def greedyAction(state):
+        action = policy[state]
         return action
-        
     return greedyAction
 
 if __name__=="__main__": 
     np.random.seed(0)
     parser = argparse.ArgumentParser()
+    #indicate where to save results 
     args = parser.parse_args()
     
     #environment
     env = gym.envs.make('tictactoe-v0')
-    # Q = collections.defaultdict(lambda : np.zeros(env.action_space.n))
-
-
     #training parameters
     num_actions=9
     gamma = 0.99
     alpha = 0.4
     epsilon = 0.1
     train_episodes = 10000
-    train_rewards = {}
     ep_decay=0.9
 
-    #agents initialization
-    #Q = collections.defaultdict(lambda : np.zeros(env.action_space.n))
+    #agent initialization
     agent_info = {"num_actions": num_actions, "epsilon": epsilon, "gamma": gamma, "alpha": alpha, "seed":0}
     agent = QLearningAgent()
     agent.agent_init(agent_info)
-
 
     train_rewards = [] 
     progress = []
@@ -135,28 +126,18 @@ if __name__=="__main__":
         policy=getPolicy(agent.q)
         train_rewards += dic_rewards
         result, _ = play(env,policy,100)
-        progress.append(result['win'])  
-        #policy, rewards = qLearning(Q,env,gamma, alpha, epsilon, step)
-        #sets up the env (set env)
-        #returns: policy and rewards 
-
-        # train_rewards += rewards
-        # result, _ = play(env,policy,100)
-        # progress.append(result['win'])
-
-    #testing against other player
-    # #testing random
-    # print('\nTesting against random opponent..')
-    # # result_random , test_rewards_random = play(env,policy, test_episodes)
-
-
-    # #evaluation
-    # print('\n***Test results after training({} episodes) against rand player***'.format(train_episodes))
-    # print('\nAverage Test Rewards playing against random agent:',end='')
-    # print(np.mean(test_rewards_random))
-    # print('\nTest Results(match count) playing {} episodes against random agent:'.format(test_episodes),end='')
-    # print(result_random)
+        progress.append(result['win'])
  
+  # # Progress during traininig
+    #save plots images
+    plt.plot(range(200,train_episodes+1,200),progress)
+    plt.xlabel('Episodes')
+    plt.ylabel('Number of wins(out of 100 test games)')
+    plt.title('Progress(after every 200 train games against rand player)')
+    plt.savefig('training_progress_against_ONLY_rand_opponent.png')
+
+
+#FIX THIS 
     size = 10000
     rewards_list = list(dic_rewards.values())
     mmeans = moving_average(rewards_list, size = size)
@@ -165,23 +146,3 @@ if __name__=="__main__":
     plt.ylabel("Rewards Total", labelpad=35)
     plt.legend()
     plt.show()
-
-
-  # # Progress during traininig
-    #save plots images
-    plt.plot(range(200,train_episodes+1,200),progress)
-    plt.xlabel('Episodes')
-    plt.ylabel('Number of wins(out of 100 test games)')
-    plt.title('Progress(after every 200 train games against rand player)')
-    plt.savefig('training_progress_against_ONLY_rand_opponent.png')
-    
-    # #testing against other players
-    # print('\nTesting against random player..')
-    # result_random , test_rewards_random = play(env,policy,test_episodes)
-
-    # # #evaluation
-    # print('\nAverage Test Rewards playing against random agent:',end='')
-    # print(np.mean(test_rewards_random))
-    # print('\nTest Results(match count) playing {} episodes against random agent:'.format(test_episodes),end='')
-    # print(result_random)
-    # print('\nAverage Test Rewards playing against safe agent:',end='')
